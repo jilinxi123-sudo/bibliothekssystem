@@ -4,18 +4,24 @@ Ein lokales Bibliotheksverwaltungssystem für private Büchersammlungen. Ein Ger
 (z. B. dieser PC) läuft als Server, alle Tablets/Handys im selben WLAN greifen per Browser
 darauf zu — gescannt, gesucht und exportiert wird auf allen Geräten mit denselben Daten.
 
-## Voraussetzung
-
-- Python 3.11 oder neuer muss auf dem Server-PC installiert sein.
-
 ## Erststart
 
-**Installationspaket (empfohlen):** `installer/dist/Bibliothekssystem-Setup.exe` ausführen –
-Zielordner frei wählbar, danach Verknüpfungen auf Desktop und im Startmenü, kein separat
-installiertes Python nötig, reguläre Deinstallation über „Apps & Features". Neu bauen lässt
-sich das Paket jederzeit mit `installer\build.ps1`.
+**Portables ZIP (empfohlen):** [Download über die Projektseite](https://bibliothekssystem.netlify.app)
+oder direkt von [GitHub Releases](https://github.com/jilinxi123-sudo/bibliothekssystem/releases/latest).
+ZIP an einem beliebigen Ort entpacken, dann `launcher_silent.vbs` doppelklicken – startet
+Server und App-Fenster. Kein separat installiertes Python nötig (eine eingebettete
+Python-Laufzeit ist im Paket enthalten), kein Installationsassistent, darum auch keine
+SmartScreen-Warnung wie beim früheren `.exe`-Installer. Optional `create_desktop_shortcut.bat`
+einmal ausführen für eine Desktop-Verknüpfung. Neu bauen lässt sich das Paket jederzeit mit
+`installer\build_zip.ps1`.
 
-**Direkt aus dem Quellordner (für Entwicklung):**
+**NSIS-Installer (`installer/dist/Bibliothekssystem-Setup.exe`, Legacy):** Baut sich weiterhin
+mit `installer\build.ps1`, bietet eine "richtige" Windows-Deinstallation über „Apps &
+Features" – dafür löst die unsignierte `.exe` beim ersten Ausführen eine SmartScreen-Warnung
+aus. Für neue Installationen wird das ZIP-Paket oben empfohlen.
+
+**Direkt aus dem Quellordner (für Entwicklung):** Python 3.11 oder neuer muss auf dem
+Rechner installiert sein.
 
 1. Doppelklick auf `start.bat`.
 2. Beim ersten Start werden automatisch eine virtuelle Python-Umgebung angelegt, alle
