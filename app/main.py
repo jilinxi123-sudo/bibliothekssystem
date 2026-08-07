@@ -53,6 +53,18 @@ def speicher_page():
     return FileResponse(STATIC_DIR / "speicher.html")
 
 
+@app.get("/sw.js")
+def service_worker():
+    # Eigene Route statt /static/js/sw.js, damit der Service-Worker-Scope
+    # standardmaessig die ganze Seite ("/") abdeckt, nicht nur /static/js/.
+    return FileResponse(STATIC_DIR / "js" / "sw.js", media_type="application/javascript")
+
+
+@app.get("/manifest.webmanifest")
+def web_manifest():
+    return FileResponse(STATIC_DIR / "manifest.webmanifest", media_type="application/manifest+json")
+
+
 def _lan_ip() -> str:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:

@@ -108,8 +108,14 @@ def main() -> None:
         sizes=[(16, 16), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)],
     )
 
+    # Zusaetzliche Groessen fuer das PWA-Manifest (Installierbarkeits-Kriterien
+    # der Browser verlangen u. a. 192x192 und 512x512).
+    icon.resize((192, 192), Image.LANCZOS).save(STATIC_DIR / "icon-192.png", "PNG")
+    icon.resize((512, 512), Image.LANCZOS).save(STATIC_DIR / "icon-512.png", "PNG")
+
     print(f"Icon gespeichert: {ico_path}")
     print(f"PNG gespeichert:  {png_path}")
+    print(f"PWA-Icons gespeichert: icon-192.png, icon-512.png")
 
 
 if __name__ == "__main__":
