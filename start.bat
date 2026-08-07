@@ -99,6 +99,12 @@ if not defined SKIP_PAUSE pause
 exit /b 0
 
 :open_app_window
+rem Ein haengengebliebener Edge-Prozess mit demselben --user-data-dir (z. B. von
+rem einem frueheren Start, dessen Fenster minimiert/verdeckt irgendwo offen ist)
+rem verhindert bei Chromium oft unsichtbar ein neues Fenster - es passiert dann
+rem einfach gar nichts, ohne Fehlermeldung. Darum vor dem Start sauber schliessen.
+powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*Bibliothekssystem\EdgeApp*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }" >nul 2>nul
+
 set EDGE_EXE=
 for /f "delims=" %%P in ('where msedge.exe 2^>nul') do if not defined EDGE_EXE set EDGE_EXE=%%P
 if not defined EDGE_EXE if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" set EDGE_EXE=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe

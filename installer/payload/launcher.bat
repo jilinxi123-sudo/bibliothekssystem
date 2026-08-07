@@ -15,16 +15,13 @@ if not exist "%RUNTIME_PY%" (
 
 powershell -NoProfile -Command "try { $c = New-Object Net.Sockets.TcpClient('localhost',8000); $c.Close(); exit 0 } catch { exit 1 }" >nul 2>nul
 if not errorlevel 1 (
-    echo.
-    echo WARNUNG: Auf Port 8000 laeuft bereits ein Server ^(vermutlich eine
-    echo alte, nicht richtig beendete Instanz^). Wenn dieses Fenster einfach
-    echo weitermacht, wird das App-Fenster auf diese ALTE Instanz zeigen.
-    echo.
-    echo Bitte das Fenster "Bibliothekssystem Server" schliessen ^(oder im
-    echo Startmenue "Bibliothek beenden" ausfuehren^), dann erneut versuchen.
-    echo.
-    if not defined SKIP_PAUSE pause
-    exit /b 1
+    rem Es laeuft schon ein Server (typischerweise: die App wurde schon gestartet und
+    rem man klickt versehentlich ein zweites Mal) - keinen zweiten Server starten,
+    rem sondern einfach das App-Fenster auf den vorhandenen Server zeigen lassen.
+    rem Wichtig: hier NICHT einfach abbrechen, sonst passiert im "silent"-Modus
+    rem (Start ueber launcher_silent.vbs) rein gar nichts sichtbares.
+    call :open_app_window
+    exit /b 0
 )
 
 "%RUNTIME_PY%" scripts\gen_cert.py
@@ -61,6 +58,12 @@ if not defined SKIP_PAUSE pause
 exit /b 0
 
 :open_app_window
+rem Ein haengengebliebener Edge-Prozess mit demselben --user-data-dir (z. B. von
+rem einem frueheren Start, dessen Fenster minimiert/verdeckt irgendwo offen ist)
+rem verhindert bei Chromium oft unsichtbar ein neues Fenster - es passiert dann
+rem einfach gar nichts, ohne Fehlermeldung. Darum vor dem Start sauber schliessen.
+powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*Bibliothekssystem\EdgeApp*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }" >nul 2>nul
+
 set EDGE_EXE=
 for /f "delims=" %%P in ('where msedge.exe 2^>nul') do if not defined EDGE_EXE set EDGE_EXE=%%P
 if not defined EDGE_EXE if exist "%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe" set EDGE_EXE=%ProgramFiles(x86)%\Microsoft\Edge\Application\msedge.exe

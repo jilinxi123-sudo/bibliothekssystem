@@ -129,3 +129,11 @@ Copy-Item -Path (Join-Path $InstallerDir "payload\launcher_silent.vbs") -Destina
 Copy-Item -Path (Join-Path $InstallerDir "payload\manage_permissions.bat") -Destination (Join-Path $StageDir "manage_permissions.bat")
 Copy-Item -Path (Join-Path $InstallerDir "payload\stop_server.bat") -Destination (Join-Path $StageDir "stop_server.bat")
 Copy-Item -Path (Join-Path $InstallerDir "payload\create_desktop_shortcut.bat") -Destination (Join-Path $StageDir "create_desktop_shortcut.bat")
+
+# Hinweis: eine .lnk-Verknuepfung mit App-Icon HIER im Stage-Ordner vorzubauen wurde
+# probiert und wieder verworfen - .lnk-Dateien speichern beim Erstellen einen absoluten
+# Pfad, der auf den Build-Rechner zeigt. Nach dem Entpacken des ZIPs an einem anderen
+# Ort (jeder reale Nutzungsfall) zeigt die Verknuepfung ins Leere und tut beim Anklicken
+# schlicht nichts - schlimmer als gar keine Verknuepfung. create_desktop_shortcut.bat
+# oben loest das richtig, weil es die Verknuepfung ERST beim Ausfuehren auf dem
+# Zielrechner mit dem dann korrekten Pfad (%CD%) erzeugt.
