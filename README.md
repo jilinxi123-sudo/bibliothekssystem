@@ -8,12 +8,13 @@ darauf zu — gescannt, gesucht und exportiert wird auf allen Geräten mit dense
 
 **Portables ZIP (empfohlen):** [Download über die Projektseite](https://bibliothekssystem.netlify.app)
 oder direkt von [GitHub Releases](https://github.com/jilinxi123-sudo/bibliothekssystem/releases/latest).
-ZIP an einem beliebigen Ort entpacken, dann `launcher_silent.vbs` doppelklicken – startet
-Server und App-Fenster. Kein separat installiertes Python nötig (eine eingebettete
-Python-Laufzeit ist im Paket enthalten), kein Installationsassistent, darum auch keine
-SmartScreen-Warnung wie beim früheren `.exe`-Installer. Optional `create_desktop_shortcut.bat`
-einmal ausführen für eine Desktop-Verknüpfung. Neu bauen lässt sich das Paket jederzeit mit
-`installer\build_zip.ps1`.
+ZIP an einem beliebigen Ort entpacken, dann einmal `create_desktop_shortcut.bat`
+doppelklicken – legt eine Desktop-Verknüpfung „Bibliothek" mit eigenem Icon an (leichter
+wiederzufinden als die unauffälligen Dateien im entpackten Ordner). Ab dann über dieses Icon
+starten – öffnet Server und App-Fenster. Kein separat installiertes Python nötig (eine
+eingebettete Python-Laufzeit ist im Paket enthalten), kein Installationsassistent, darum auch
+keine SmartScreen-Warnung wie beim früheren `.exe`-Installer. Neu bauen lässt sich das Paket
+jederzeit mit `installer\build_zip.ps1`.
 
 **NSIS-Installer (`installer/dist/Bibliothekssystem-Setup.exe`, Legacy):** Baut sich weiterhin
 mit `installer\build.ps1`, bietet eine "richtige" Windows-Deinstallation über „Apps &
