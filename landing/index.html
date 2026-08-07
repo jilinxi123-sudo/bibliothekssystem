@@ -37,7 +37,7 @@
     padding: 24px;
   }
   .card {
-    max-width: 560px;
+    max-width: 640px;
     width: 100%;
     background: var(--card);
     border: 1px solid var(--border);
@@ -48,9 +48,13 @@
     margin: 0 0 8px;
     font-size: 1.6rem;
   }
+  h2 {
+    margin: 32px 0 12px;
+    font-size: 1.15rem;
+  }
   .sub {
     color: var(--muted);
-    margin: 0 0 28px;
+    margin: 0 0 8px;
     line-height: 1.5;
   }
   .status {
@@ -73,7 +77,7 @@
   }
   a.btn {
     display: inline-block;
-    margin-top: 8px;
+    margin: 12px 0;
     padding: 12px 24px;
     border-radius: 10px;
     background: var(--accent);
@@ -81,8 +85,22 @@
     text-decoration: none;
     font-weight: 600;
   }
+  .shot {
+    max-width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: block;
+    margin: 14px 0;
+  }
+  .icon-shot {
+    width: 120px;
+    background: var(--card);
+  }
+  .app-shot {
+    background: var(--card);
+  }
   footer {
-    margin-top: 28px;
+    margin-top: 32px;
     font-size: 0.85rem;
     color: var(--muted);
   }
@@ -93,40 +111,57 @@
     <span class="status">Download verfügbar</span>
     <h1>📚 Bibliothekssystem</h1>
     <p class="sub">
-      Dies ist eine Software zur Bibliotheksverwaltung. Ein Gerät (in der
-      Regel ein Windows-Computer) speichert alle Bücherdaten (im Folgenden
-      „Hauptgerät" genannt); mehrere Geräte (Tablets, Handys usw.) im selben
-      WLAN können sich per Netzwerk mit diesem Hauptgerät verbinden, um
-      Bücherdaten zu erfassen und zu bearbeiten.
+      Ein lokales Bibliotheksverwaltungssystem für private Büchersammlungen.
+      Ein Gerät (ein Windows-Computer) im WLAN läuft als Server; alle Tablets
+      und Handys im selben WLAN greifen per Browser darauf zu, um Bücher zu
+      erfassen, zu suchen und zu bearbeiten — auf allen Geräten mit denselben
+      Daten. Der komplette Bestand lässt sich jederzeit als Word-, Excel-
+      oder PDF-Datei exportieren.
     </p>
-    <p>
-      Voraussetzung dafür, dass die anderen Geräte genutzt werden können,
-      ist, dass das Hauptgerät zur gleichen Zeit eingeschaltet und geöffnet
-      ist.
-    </p>
-    <p>
-      Die Software benötigt fast nie eine Internetverbindung — mit einer
-      Ausnahme: Sobald die ISBN eines Buches vorliegt, sucht das System
-      automatisch bei der Deutschen Nationalbibliothek und bei Google Books
-      nach Titel, Autor und weiteren Angaben. Die gefundenen Informationen
-      (Titel, Autor, Verlag usw.) werden automatisch in das Formular
-      eingetragen.
-    </p>
-    <p>
-      Installation auf dem Hauptgerät: ZIP herunterladen und entpacken (Ordner
-      frei wählbar), dann darin einmal <code>create_desktop_shortcut.bat</code>
-      doppelklicken — legt eine Desktop-Verknüpfung „Bibliothek" mit eigenem
-      Icon an. Ab dann einfach dieses Icon verwenden, um Server zu starten und
-      die Bibliothek zu öffnen. Kein separat installiertes Python nötig.
-    </p>
+
+    <h2>Installation auf dem Hauptgerät</h2>
     <a class="btn" href="https://github.com/jilinxi123-sudo/bibliothekssystem/releases/latest/download/Bibliothekssystem-Portable.zip">
       ⬇ Download (ZIP)
     </a>
-    <p style="margin-top:20px;">
-      <a href="https://github.com/jilinxi123-sudo/bibliothekssystem" target="_blank" rel="noopener">
-        Quellcode &amp; ausführliche Anleitung auf GitHub
-      </a>
+    <p>
+      ZIP an einem beliebigen Ort entpacken. Darin einmal
+      <code>create_desktop_shortcut.bat</code> doppelklicken – das legt eine
+      Desktop-Verknüpfung „Bibliothek" mit eigenem Icon an (leichter
+      wiederzufinden als die unauffälligen Dateien im entpackten Ordner):
     </p>
+    <img class="shot icon-shot" src="icon.png" alt="Desktop-Verknüpfung „Bibliothek" mit Buch-Icon">
+    <p>
+      Ab dann einfach über dieses Icon starten – öffnet Server und
+      Bedienoberfläche automatisch. Kein separat installiertes Python nötig.
+    </p>
+
+    <h2>Erster Start</h2>
+    <p>
+      Der Server startet in einem eigenen Fenster („Bibliothekssystem
+      Server"), danach öffnet sich die Bedienoberfläche automatisch in einem
+      eigenen App-Fenster (Microsoft Edge im App-Modus, ohne
+      Adressleiste/Tabs – kein gewöhnlicher Browser-Tab) unter
+      <code>https://localhost:8000</code>.
+    </p>
+    <p>
+      Dabei zeigt der Browser einmalig eine Sicherheitswarnung („Nicht
+      sicher" bzw. „Ihre Verbindung ist nicht privat"). Grund: Diese Software
+      läuft über eine lokale Adresse (localhost bzw. 192.168.x.x) statt eine
+      echte Internet-Adresse – dafür dürfen offizielle Zertifizierungsstellen
+      grundsätzlich keine Zertifikate ausstellen, die App nutzt deshalb ein
+      selbst erzeugtes, das der Browser nicht kennt. Das ist im eigenen WLAN
+      unbedenklich: einfach auf „Erweitert" und dann „Trotzdem fortfahren"
+      klicken. Das ist pro Gerät nur einmal nötig.
+    </p>
+    <p>
+      Öffnet sich nicht automatisch ein Einführungs-/Willkommensfenster, oben
+      rechts auf „❓ Anleitung" klicken, um sich einen vollständigen Überblick
+      über die Software zu verschaffen (dauert ca. 5 Minuten):
+    </p>
+    <img class="shot app-shot" src="anleitung.png" alt="Anleitung-Button oben rechts in der Bibliothek-Bedienoberfläche">
+
+    <p>Wir wünschen viel Freude mit der Bibliothek!</p>
+
     <footer>Bibliothekssystem — Server + Browser-Zugriff im eigenen WLAN.</footer>
   </div>
 </body>
