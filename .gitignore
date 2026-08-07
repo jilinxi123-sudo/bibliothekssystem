@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+certs/
+app/static/qr.png
+.claude/
+app/static/js/db_check2.json

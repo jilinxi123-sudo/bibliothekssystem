@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bibliothek – Katalog</title>
+<link rel="icon" type="image/x-icon" href="/static/icon.ico" />
+<link rel="apple-touch-icon" href="/static/icon-256.png" />
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>📚 Bibliothek</h1>
+  <nav>
+    <a href="/">Scannen</a>
+    <a href="/katalog" class="active">Katalog</a>
+    <a href="#" id="nav-tour-btn">❓ Anleitung</a>
+    <a href="/speicher" id="nav-speicher-link">Speicher</a>
+  </nav>
+</header>
+
+<main class="wide">
+  <h2 style="margin-bottom:4px;">Katalog</h2>
+  <p id="total-count" class="stat-line"></p>
+
+  <div class="card">
+    <div class="filter-row">
+      <input type="search" id="filter-search" placeholder="Suche nach Titel, Autor, ISBN, Verlag …" />
+    </div>
+    <div class="button-row" style="margin-top:0;">
+      <button id="btn-refresh" class="secondary">Aktualisieren</button>
+      <button type="button" id="btn-export-open" class="secondary">Exportieren</button>
+      <a id="export-backup" class="button secondary" href="#">Komplettes Backup (.zip)</a>
+      <button type="button" id="btn-import" class="secondary">Daten importieren</button>
+      <input type="file" id="import-file-input" accept=".zip" class="hidden" />
+      <a id="calendar-feed" class="button secondary" href="/api/calendar.ics">Kalender-Feed (alle Rückgabetermine)</a>
+    </div>
+  </div>
+
+  <div id="status" class="status hidden"></div>
+
+  <div id="bulk-bar" class="bulk-bar hidden">
+    <strong><span id="bulk-count">0</span> ausgewählt</strong>
+    <button id="btn-bulk-due-date" class="secondary" type="button">Rückgabedatum setzen</button>
+    <div id="bulk-due-date-picker" class="date-picker-row hidden"></div>
+    <input type="hidden" id="bulk-due-date-input" />
+    <button id="btn-bulk-due-date-apply" class="secondary hidden" type="button">Übernehmen</button>
+    <button type="button" id="btn-bulk-export-open" class="secondary">Auswahl exportieren</button>
+    <button id="btn-bulk-delete" class="danger" type="button">Löschen</button>
+    <button id="btn-bulk-clear" class="secondary" type="button">Auswahl aufheben</button>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="select-all" /></th>
+          <th class="col-nr">Nr.</th>
+          <th>Cover</th>
+          <th class="sortable" data-sort-key="isbn">ISBN <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="title">Titel <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="author">Autor <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="themes">Themen <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="source">Herkunft <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="location">Standort <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="notes">Notizen <span class="sort-arrow"></span></th>
+          <th class="sortable" data-sort-key="due_date">Rückgabe <span class="sort-arrow"></span></th>
+          <th>Verlauf</th>
+        </tr>
+        <tr class="filter-row">
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th class="muted" style="font-weight:700; white-space:nowrap; text-align:right;">Filter: →</th>
+          <th>
+            <div class="dropdown" id="filter-theme-widget">
+              <button type="button" class="secondary filter-multiselect-toggle" id="filter-theme-toggle">Alle</button>
+              <div class="dropdown-menu hidden" id="filter-theme-menu"></div>
+            </div>
+          </th>
+          <th>
+            <div class="dropdown" id="filter-source-widget">
+              <button type="button" class="secondary filter-multiselect-toggle" id="filter-source-toggle">Alle</button>
+              <div class="dropdown-menu hidden" id="filter-source-menu"></div>
+            </div>
+          </th>
+          <th>
+            <div class="dropdown" id="filter-location-widget">
+              <button type="button" class="secondary filter-multiselect-toggle" id="filter-location-toggle">Alle</button>
+              <div class="dropdown-menu hidden" id="filter-location-menu"></div>
+            </div>
+          </th>
+          <th></th>
+          <th></th>
+          <th><button type="button" id="btn-clear-filters" class="secondary" style="padding:6px 10px; font-size:0.78rem; white-space:nowrap;">Zurücksetzen</button></th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+</main>
+
+<div id="edit-modal-overlay" class="modal-overlay hidden">
+  <div class="modal-dialog">
+    <button type="button" class="modal-close" id="btn-edit-close-x">×</button>
+    <h2>Buch bearbeiten</h2>
+    <p>ISBN: <strong id="edit-isbn-display"></strong></p>
+    <p id="edit-meta-info" class="field-readonly"></p>
+
+    <label>Buchcover</label>
+    <div class="cover-preview">
+      <img id="edit-cover-preview-img" class="hidden" alt="Buchcover" />
+      <div class="button-row" style="margin-top:0;">
+        <button type="button" id="edit-btn-take-photo" class="secondary">Foto aufnehmen</button>
+        <button type="button" id="edit-btn-choose-photo" class="secondary">Foto auswählen</button>
+        <button type="button" id="edit-btn-remove-photo" class="danger hidden">Foto entfernen</button>
+        <input type="file" id="edit-cover-file-input-library" accept="image/*" class="hidden" />
+      </div>
+    </div>
+
+    <label for="edit-title">Titel</label>
+    <input type="text" id="edit-title" />
+
+    <label for="edit-author">Autor</label>
+    <input type="text" id="edit-author" />
+
+    <label for="edit-publisher">Verlag</label>
+    <input type="text" id="edit-publisher" />
+
+    <label for="edit-year">Erscheinungsjahr</label>
+    <input type="text" id="edit-year" />
+
+    <label for="edit-theme">Thema</label>
+    <div class="tag-picker" id="edit-tags-theme"></div>
+    <input type="hidden" id="edit-theme" />
+
+    <label for="edit-source">Herkunft</label>
+    <div class="tag-picker" id="edit-tags-source"></div>
+    <input type="hidden" id="edit-source" />
+
+    <label for="edit-location">Standort</label>
+    <div class="tag-picker" id="edit-tags-location"></div>
+    <input type="hidden" id="edit-location" />
+
+    <label for="edit-notes">Notizen</label>
+    <textarea id="edit-notes"></textarea>
+
+    <label>Rückgabedatum (falls ausgeliehen)</label>
+    <div id="edit-due-date-picker"></div>
+    <input type="hidden" id="edit-due-date" />
+    <div class="button-row" style="margin-top:0;">
+      <button type="button" id="edit-add-to-calendar" class="secondary hidden">📅 Im Kalender speichern</button>
+    </div>
+
+    <div class="button-row">
+      <button id="btn-edit-save">Speichern</button>
+      <button id="btn-edit-cancel" class="secondary" type="button">Schließen</button>
+      <button id="btn-edit-delete" class="danger" type="button">Löschen</button>
+    </div>
+  </div>
+</div>
+
+<div id="cover-lightbox-overlay" class="modal-overlay cover-lightbox-overlay hidden">
+  <button type="button" class="modal-close cover-lightbox-close" id="btn-cover-lightbox-close-x">×</button>
+  <img id="cover-lightbox-img" src="" alt="Buchcover" />
+</div>
+
+<div id="history-modal-overlay" class="modal-overlay hidden">
+  <div class="modal-dialog">
+    <button type="button" class="modal-close" id="btn-history-close-x">×</button>
+    <h2 style="margin-top:0;">Änderungsverlauf</h2>
+    <p>ISBN: <strong id="history-isbn-display"></strong></p>
+    <div id="history-modal-list" class="history-list"></div>
+    <div class="button-row">
+      <button id="btn-history-close" class="secondary" type="button">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<div id="export-modal-overlay" class="modal-overlay hidden">
+  <div class="modal-dialog" style="max-width:480px;">
+    <button type="button" class="modal-close" id="btn-export-modal-close-x">×</button>
+    <h2 style="margin-top:0;">Exportieren</h2>
+
+    <label>Format</label>
+    <div class="button-row" style="margin-top:0;" id="export-format-row">
+      <label class="checkbox-item"><input type="radio" name="export-format" value="excel" checked /> Excel</label>
+      <label class="checkbox-item"><input type="radio" name="export-format" value="word" /> Word</label>
+      <label class="checkbox-item"><input type="radio" name="export-format" value="pdf" /> PDF</label>
+    </div>
+
+    <label>Spalten</label>
+    <div class="button-row" style="margin-top:0;">
+      <button type="button" id="btn-export-columns-all" class="secondary">Alle auswählen</button>
+      <button type="button" id="btn-export-columns-invert" class="secondary">Auswahl umkehren</button>
+    </div>
+    <div id="export-columns-list" class="checkbox-list"></div>
+
+    <div class="button-row">
+      <button type="button" id="btn-export-confirm">Exportieren</button>
+      <button type="button" id="btn-export-cancel" class="secondary">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/dialogs.js"></script>
+<script src="/static/js/tags.js"></script>
+<script src="/static/js/date-picker.js"></script>
+<script src="/static/js/camera-capture.js"></script>
+<script src="/static/js/katalog.js"></script>
+<script src="/static/js/tour.js"></script>
+</body>
+</html>

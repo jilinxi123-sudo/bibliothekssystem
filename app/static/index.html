@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bibliothek – Scannen</title>
+<link rel="icon" type="image/x-icon" href="/static/icon.ico" />
+<link rel="apple-touch-icon" href="/static/icon-256.png" />
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>📚 Bibliothek</h1>
+  <nav>
+    <a href="/" class="active">Scannen</a>
+    <a href="/katalog">Katalog</a>
+    <a href="#" id="nav-tour-btn">❓ Anleitung</a>
+    <a href="/speicher">Speicher</a>
+  </nav>
+</header>
+
+<main>
+  <div class="card">
+    <div id="reader"></div>
+    <select id="camera-select" class="hidden"></select>
+    <div class="button-row">
+      <button id="btn-start-scan">Scannen starten</button>
+      <button id="btn-stop-scan" class="secondary hidden">Scannen stoppen</button>
+      <button type="button" id="btn-phone-scan-hint" class="secondary">📱 Mit Handy/Tablet scannen</button>
+      <button type="button" id="btn-manage-permissions" class="secondary hidden">🔧 Kamera-Berechtigung verwalten</button>
+    </div>
+    <p class="field-readonly">💡 Empfehlung: Scannen klappt mit Handy oder Tablet in der Praxis deutlich schneller und zuverlässiger als mit einer PC-Kamera – am besten oben „📱 Mit Handy/Tablet scannen" nutzen.</p>
+    <p class="field-readonly">Tipp (PC-Kamera): Barcode gerade ausgerichtet und mittig vor die Kamera halten, ca. 10–15 cm Abstand, gut beleuchtet – und einen Moment ruhig halten, die Erkennung kann ein paar Sekunden dauern. Mit Handy/Tablet geht es meist schneller und toleranter (siehe Empfehlung oben).</p>
+
+    <label for="manual-isbn-input">ISBN manuell eingeben</label>
+    <div class="button-row" style="margin-top:0;">
+      <input type="text" id="manual-isbn-input" placeholder="z. B. 9783125121457" />
+      <button id="btn-manual-lookup" class="secondary">Suchen</button>
+      <button type="button" id="btn-manual-entry" class="secondary">✏️ Ohne ISBN manuell erfassen</button>
+    </div>
+  </div>
+
+  <div id="status" class="status hidden"></div>
+
+  <form id="book-form" class="card hidden">
+    <h2 id="form-heading">Buch</h2>
+    <p>ISBN: <strong id="isbn-display"></strong> <span id="meta-badge" class="badge hidden">nicht angereichert</span></p>
+    <p id="meta-info" class="field-readonly"></p>
+
+    <label>Buchcover</label>
+    <div class="cover-preview">
+      <img id="cover-preview-img" class="hidden" alt="Buchcover" />
+      <div class="button-row" style="margin-top:0;">
+        <button type="button" id="btn-take-photo" class="secondary">Foto aufnehmen</button>
+        <button type="button" id="btn-choose-photo" class="secondary">Foto auswählen</button>
+        <input type="file" id="cover-file-input-library" accept="image/*" class="hidden" />
+      </div>
+    </div>
+
+    <label for="field-title">Titel</label>
+    <input type="text" id="field-title" />
+
+    <label for="field-author">Autor</label>
+    <input type="text" id="field-author" />
+
+    <label for="field-publisher">Verlag</label>
+    <input type="text" id="field-publisher" />
+
+    <label for="field-year">Erscheinungsjahr</label>
+    <input type="text" id="field-year" />
+
+    <label for="field-theme">Thema</label>
+    <div class="tag-picker" id="tags-theme"></div>
+    <input type="hidden" id="field-theme" />
+
+    <label for="field-source">Herkunft</label>
+    <div class="tag-picker" id="tags-source"></div>
+    <input type="hidden" id="field-source" />
+
+    <label for="field-location">Standort</label>
+    <div class="tag-picker" id="tags-location"></div>
+    <input type="hidden" id="field-location" />
+
+    <label for="field-notes">Notizen</label>
+    <textarea id="field-notes"></textarea>
+
+    <label>Rückgabedatum (falls ausgeliehen)</label>
+    <div id="field-due-date-picker"></div>
+    <input type="hidden" id="field-due-date" />
+    <div class="button-row" style="margin-top:0;">
+      <button type="button" id="btn-add-to-calendar" class="secondary hidden">📅 Im Kalender speichern</button>
+    </div>
+
+    <div class="button-row">
+      <button type="submit">Speichern</button>
+      <button type="button" id="btn-save-and-scan-next" class="secondary">💾📷 Speichern und nächstes Buch scannen</button>
+      <button type="button" id="btn-cancel" class="secondary">Abbrechen</button>
+    </div>
+  </form>
+</main>
+
+<div id="phone-scan-modal-overlay" class="modal-overlay hidden">
+  <div class="modal-dialog" style="max-width:480px;">
+    <button type="button" class="modal-close" id="btn-phone-scan-close-x">×</button>
+    <h2 style="margin-top:0;">Mit Handy/Tablet scannen</h2>
+    <p class="field-readonly">Hinweis: Diese Software läuft nur auf einem Windows-PC als Haupt-Gerät (der Server muss dort laufen). Das Handy oder Tablet kann sich übers WLAN mit der Bedienoberfläche verbinden, um neue Daten einzugeben oder bestehende zu bearbeiten – zum Speichern der Daten dient es aber nicht.</p>
+    <div class="qr-hint">
+      <img id="phone-scan-qr" src="/static/qr.png" alt="QR-Code zur Bibliothek" />
+      <div>
+        <p class="field-readonly" style="margin:0;">Adresse für andere Geräte im selben WLAN:</p>
+        <p><strong id="phone-scan-url">wird geladen …</strong></p>
+      </div>
+    </div>
+    <ol class="field-readonly" style="padding-left:20px;">
+      <li>Sicherstellen, dass der Haupt-PC eingeschaltet ist und die Software dort läuft.</li>
+      <li>Handy/Tablet mit demselben WLAN verbinden wie diesen PC.</li>
+      <li>QR-Code scannen oder die Adresse oben im Browser eingeben.</li>
+      <li>Einmalige Zertifikatswarnung mit „Erweitert“ → „Trotzdem fortfahren“ bestätigen (normal bei einem privaten Netzwerk-Tool).</li>
+      <li>Am besten als Lesezeichen/„Zum Home-Bildschirm hinzufügen“ speichern.</li>
+    </ol>
+    <p class="field-readonly" style="margin-bottom:4px;"><strong>Falls die Kamera blockiert bleibt oder sich nicht öffnen lässt:</strong></p>
+    <ol class="field-readonly" style="padding-left:20px;">
+      <li>Auf das kleine Symbol ganz links in der Adressleiste tippen (Schloss- oder „i“-Symbol, direkt vor der Internetadresse).</li>
+      <li>„Berechtigungen“ bzw. „Website-Einstellungen“ öffnen.</li>
+      <li>„Kamera“ suchen und auf „Zulassen“ stellen (falls dort „Blockiert“ steht).</li>
+      <li>Seite neu laden und erneut auf „Scannen starten“ tippen.</li>
+    </ol>
+    <div class="button-row">
+      <button type="button" id="btn-phone-scan-close" class="secondary">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/vendor/zxing.min.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/dialogs.js"></script>
+<script src="/static/js/tags.js"></script>
+<script src="/static/js/date-picker.js"></script>
+<script src="/static/js/camera-capture.js"></script>
+<script src="/static/js/scan.js"></script>
+<script src="/static/js/tour.js"></script>
+</body>
+</html>

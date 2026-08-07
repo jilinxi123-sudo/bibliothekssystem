@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bibliothek – Speicher</title>
+<link rel="icon" type="image/x-icon" href="/static/icon.ico" />
+<link rel="apple-touch-icon" href="/static/icon-256.png" />
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<header>
+  <h1>📚 Bibliothek</h1>
+  <nav>
+    <a href="/">Scannen</a>
+    <a href="/katalog">Katalog</a>
+    <a href="#" id="nav-tour-btn">❓ Anleitung</a>
+    <a href="/speicher" class="active">Speicher</a>
+  </nav>
+</header>
+
+<main>
+  <h2 style="margin-bottom:4px;">📁 Speicherort & Aufbau dieser Installation</h2>
+  <p class="field-readonly" style="margin-top:0;">Installationsordner auf diesem Rechner: <strong id="install-path">wird geladen …</strong></p>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Aufbau</h3>
+    <p class="field-readonly" style="margin-bottom:4px;">Jeder Ordner/Datei darin, mit Zweck:</p>
+    <ul id="install-breakdown" class="field-readonly" style="padding-left:20px; margin:0 0 10px;">wird geladen …</ul>
+    <p class="field-readonly" style="margin-bottom:0;">Eine Internetverbindung wird nur beim Nachschlagen einer ISBN aufgebaut: dabei wird bei der Deutschen Nationalbibliothek und bei Google Books angefragt.</p>
+  </div>
+
+  <h2 style="margin-bottom:4px;">Speicherplatz</h2>
+  <p class="field-readonly" style="margin-top:0;">Zwei unterschiedliche Dinge: laufender Arbeitsspeicher (RAM) der Software selbst – technisch bedingt, nicht reduzierbar – und der Festplattenspeicher, den der komplette Programmordner belegt (unten im Detail aufgeschlüsselt).</p>
+
+  <div class="card">
+    <h3 style="margin-top:0;">💻 Arbeitsspeicher (RAM) – von der Software benötigt</h3>
+    <p id="ram-usage" class="stat-line">wird geladen …</p>
+    <p class="field-readonly" style="margin-bottom:0;">Das ist der Arbeitsspeicher, den der laufende Server-Prozess (Python) gerade belegt, damit die Bibliothek funktioniert. Das ist eine technische Grundlast der Software selbst – sie lässt sich <strong>nicht</strong> verringern, indem man Bücher oder Verlaufseinträge löscht. Ein paar Dutzend MB sind für ein Programm wie dieses völlig normal.</p>
+  </div>
+
+  <p id="total-size" class="stat-line">wird geladen …</p>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Aufteilung</h3>
+    <p class="field-readonly">Das ist der komplette Inhalt des Programmordners auf der Festplatte – jede Zeile unten zeigt, wofür der Platz draufgeht.</p>
+
+    <h4 style="margin-bottom:6px;">📚 Deine Bücher</h4>
+    <div id="storage-breakdown-books" class="field-readonly">wird geladen …</div>
+
+    <h4 style="margin-bottom:6px;">⚙️ System (Programm selbst)</h4>
+    <div id="storage-breakdown-system" class="field-readonly">wird geladen …</div>
+  </div>
+
+</main>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/dialogs.js"></script>
+<script src="/static/js/speicher.js"></script>
+<script src="/static/js/tour.js"></script>
+</body>
+</html>
