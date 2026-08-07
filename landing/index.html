@@ -64,6 +64,13 @@
     margin-bottom: 20px;
   }
   p { line-height: 1.6; }
+  code {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.9em;
+  }
   a.btn {
     display: inline-block;
     margin-top: 8px;
@@ -83,7 +90,7 @@
 </head>
 <body>
   <div class="card">
-    <span class="status">In Vorbereitung</span>
+    <span class="status">Download verfügbar</span>
     <h1>📚 Bibliothekssystem</h1>
     <p class="sub">
       Dies ist eine Software zur Bibliotheksverwaltung. Ein Gerät (in der
@@ -106,13 +113,19 @@
       eingetragen.
     </p>
     <p>
-      Der Download-Bereich für das Server-Paket wird hier bald verfügbar sein.
-      Bis dahin findest du den Quellcode und die aktuelle Installationsanleitung
-      auf GitHub.
+      Installation auf dem Hauptgerät: ZIP herunterladen und entpacken (Ordner
+      frei wählbar), dann darin <code>launcher_silent.vbs</code> doppelklicken
+      — startet den Server und öffnet die Bibliothek direkt in einem eigenen
+      Fenster. Kein separat installiertes Python nötig.
     </p>
-    <a class="btn" href="https://github.com/jilinxi123-sudo/bibliothekssystem" target="_blank" rel="noopener">
-      Zum GitHub-Repository
+    <a class="btn" href="https://github.com/jilinxi123-sudo/bibliothekssystem/releases/latest/download/Bibliothekssystem-Portable.zip">
+      ⬇ Download (ZIP)
     </a>
+    <p style="margin-top:20px;">
+      <a href="https://github.com/jilinxi123-sudo/bibliothekssystem" target="_blank" rel="noopener">
+        Quellcode &amp; ausführliche Anleitung auf GitHub
+      </a>
+    </p>
     <footer>Bibliothekssystem — Server + Browser-Zugriff im eigenen WLAN.</footer>
   </div>
 </body>
