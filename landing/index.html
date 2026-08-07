@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bibliothekssystem</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --text: #2b2a28;
+    --muted: #6b6862;
+    --accent: #8a6d3b;
+    --border: #e5e1d8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1b19;
+      --card: #26241f;
+      --text: #efece5;
+      --muted: #a8a49a;
+      --accent: #d3a86a;
+      --border: #3a372f;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    padding: 24px;
+  }
+  .card {
+    max-width: 560px;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 1.6rem;
+  }
+  .sub {
+    color: var(--muted);
+    margin: 0 0 28px;
+    line-height: 1.5;
+  }
+  .status {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--card);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  p { line-height: 1.6; }
+  a.btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: var(--card);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  footer {
+    margin-top: 28px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <span class="status">In Vorbereitung</span>
+    <h1>📚 Bibliothekssystem</h1>
+    <p class="sub">
+      Ein lokales Bibliotheksverwaltungssystem für Kita-Büchersammlungen. Läuft
+      auf einem Gerät im WLAN, alle Tablets/Handys im selben Netzwerk greifen
+      per Browser darauf zu.
+    </p>
+    <p>
+      Der Download-Bereich für das Server-Paket wird hier bald verfügbar sein.
+      Bis dahin findest du den Quellcode und die aktuelle Installationsanleitung
+      auf GitHub.
+    </p>
+    <a class="btn" href="https://github.com/jilinxi123-sudo/bibliothekssystem" target="_blank" rel="noopener">
+      Zum GitHub-Repository
+    </a>
+    <footer>Bibliothekssystem — läuft komplett offline im eigenen WLAN.</footer>
+  </div>
+</body>
+</html>
