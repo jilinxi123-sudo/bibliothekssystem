@@ -94,6 +94,24 @@
     display: block;
     margin: 14px 0;
   }
+  .shot-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .shot-row .shot {
+    margin: 0;
+  }
+  .shot-arrow {
+    font-size: 1.6rem;
+    color: var(--muted);
+  }
+  .folder-shot {
+    width: 220px;
+    background: var(--card);
+  }
   .icon-shot {
     width: 120px;
     background: var(--card);
@@ -131,7 +149,11 @@
       Desktop-Verknüpfung „Bibliothek" mit eigenem Icon an (leichter
       wiederzufinden als die unauffälligen Dateien im entpackten Ordner):
     </p>
-    <img class="shot icon-shot" src="icon.png" alt="Desktop-Verknüpfung „Bibliothek" mit Buch-Icon">
+    <div class="shot-row">
+      <img class="shot folder-shot" src="shortcut.png" alt="Datei „create_desktop_shortcut" im entpackten Ordner">
+      <span class="shot-arrow">→</span>
+      <img class="shot icon-shot" src="icon.png" alt="Desktop-Verknüpfung „Bibliothek" mit Buch-Icon">
+    </div>
     <p>
       Ab dann einfach über dieses Icon starten – öffnet Server und
       Bedienoberfläche automatisch. Kein separat installiertes Python nötig.
