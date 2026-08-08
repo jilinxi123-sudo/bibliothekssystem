@@ -62,6 +62,8 @@ if "%NEED_INSTALL%"=="1" (
     echo Abhaengigkeiten sind aktuell ^(uebersprungen^).
 )
 
+start "" wscript.exe "%~dp0please_wait.vbs"
+
 "%VENV_PY%" scripts\gen_cert.py
 if not exist "app\static\icon.ico" (
     "%VENV_PY%" scripts\gen_icon.py
@@ -99,6 +101,11 @@ if not defined SKIP_PAUSE pause
 exit /b 0
 
 :open_app_window
+rem Den "wird gestartet"-Hinweis (siehe please_wait.vbs) jetzt schliessen, da
+rem gleich das echte Fenster erscheint - Popup hat kein Fernsteuerungs-API,
+rem darum einfach den Prozess beenden (schliesst das Fenster sofort).
+powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*please_wait.vbs*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }" >nul 2>nul
+
 rem Ein haengengebliebener Edge-Prozess mit demselben --user-data-dir (z. B. von
 rem einem frueheren Start, dessen Fenster minimiert/verdeckt irgendwo offen ist)
 rem verhindert bei Chromium oft unsichtbar ein neues Fenster - es passiert dann

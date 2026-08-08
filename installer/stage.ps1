@@ -126,6 +126,7 @@ foreach ($f in @("run_server.py", "gen_cert.py", "get_lan_ip.py")) {
 
 Copy-Item -Path (Join-Path $InstallerDir "payload\launcher.bat") -Destination (Join-Path $StageDir "launcher.bat")
 Copy-Item -Path (Join-Path $InstallerDir "payload\launcher_silent.vbs") -Destination (Join-Path $StageDir "launcher_silent.vbs")
+Copy-Item -Path (Join-Path $InstallerDir "payload\please_wait.vbs") -Destination (Join-Path $StageDir "please_wait.vbs")
 Copy-Item -Path (Join-Path $InstallerDir "payload\manage_permissions.bat") -Destination (Join-Path $StageDir "manage_permissions.bat")
 Copy-Item -Path (Join-Path $InstallerDir "payload\stop_server.bat") -Destination (Join-Path $StageDir "stop_server.bat")
 Copy-Item -Path (Join-Path $InstallerDir "payload\create_desktop_shortcut.bat") -Destination (Join-Path $StageDir "create_desktop_shortcut.bat")
